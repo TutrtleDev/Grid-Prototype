@@ -9,7 +9,7 @@ public class GenerateGrid : MonoBehaviour
     [SerializeField] private int worldSizeX = 10;
     [SerializeField] private int worldSizeY = 10;
     [SerializeField] private int gridOffset = 2;
-    [SerializeField] private List<GameObject> blocks;
+    private List<GameObject> _blocksList = new();
 
     private void Start()
     {
@@ -32,7 +32,7 @@ public class GenerateGrid : MonoBehaviour
                 
                 block.transform.SetParent(transform);
                 
-                blocks.Add(block);
+                _blocksList.Add(block);
             }
         }
     }
@@ -40,14 +40,14 @@ public class GenerateGrid : MonoBehaviour
     [Button("Destroy Grid", ButtonSizes.Large)]
     private void DestroyBlocks()
     {
-        if (blocks != null)
+        if (_blocksList != null)
         {
-            foreach (GameObject block in blocks)
+            foreach (GameObject block in _blocksList)
             {
                 Destroy(block);
             }
             
-            blocks.Clear();
+            _blocksList.Clear();
         }
     }
 
