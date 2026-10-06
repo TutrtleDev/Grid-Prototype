@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class GenerateGrid : MonoBehaviour
 {
@@ -7,6 +9,7 @@ public class GenerateGrid : MonoBehaviour
     [SerializeField] private int worldSizeX = 10;
     [SerializeField] private int worldSizeY = 10;
     [SerializeField] private int gridOffset = 2;
+    [SerializeField] private List<GameObject> blocks;
 
     private void Start()
     {
@@ -14,8 +17,11 @@ public class GenerateGrid : MonoBehaviour
     }
 
     
+    [Button("Generate Grid", ButtonSizes.Large)]
     private void Generate()
     {
+        DestroyBlocks();
+        
         for (int x = 0; x < worldSizeX; x++)
         {
             for (int z = 0; z < worldSizeY; z++)
@@ -25,7 +31,28 @@ public class GenerateGrid : MonoBehaviour
                 GameObject block = Instantiate(blockPrefab, pos, Quaternion.identity);
                 
                 block.transform.SetParent(transform);
+                
+                blocks.Add(block);
             }
         }
+    }
+    
+    [Button("Destroy Grid", ButtonSizes.Large)]
+    private void DestroyBlocks()
+    {
+        if (blocks != null)
+        {
+            foreach (GameObject block in blocks)
+            {
+                Destroy(block);
+            }
+            
+            blocks.Clear();
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        DestroyBlocks();
     }
 }
